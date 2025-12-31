@@ -1,5 +1,5 @@
 {
-  "name": "create-vertex-serice",
+  "name": "create-vertex-service",
   "version": "1.0.0",
   "bin": {
     "create-vertex-service": "bin/index.js"
