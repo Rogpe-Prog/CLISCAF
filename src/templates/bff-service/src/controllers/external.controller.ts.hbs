@@ -1,0 +1,13 @@
+import { FastifyReply, FastifyRequest } from 'fastify';
+import { getWithCache } from '../clients/http.client.js';
+
+export default {
+  async getData(_request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const data = await getWithCache('/api/ok');
+      reply.send({ upstream: data });
+    } catch (err) {
+      reply.status(502).send({ error: 'upstream_error', detail: (err as Error).message });
+    }
+  }
+};

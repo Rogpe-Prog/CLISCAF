@@ -1,8 +1,8 @@
 {
-  "name": "create-vertex-service",
+  "name": "scaffolding-cli",
   "version": "1.0.0",
   "bin": {
-    "create-vertex-service": "bin/index.js"
+    "scaffolding-cli": "bin/index.js"
   },
   "description": "",
   "main": "index.js",

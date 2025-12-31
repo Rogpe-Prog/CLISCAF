@@ -1,0 +1,28 @@
+import axios from 'axios';
+import NodeCache from 'node-cache';
+
+const cache = new NodeCache({ stdTTL: 30 });
+const UPSTREAM = process.env.UPSTREAM_BASE_URL || 'http://localhost:3001';
+
+const client = axios.create({ baseURL: UPSTREAM, timeout: 5000 });
+
+client.interceptors.request.use((cfg) => {
+  cfg.headers = cfg.headers || {};
+  if (!cfg.headers['x-correlation-id']) {
+    cfg.headers['x-correlation-id'] = `${process.env.CORRELATION_ID || 'cid-' + Date.now()}`;
+  }
+  return cfg;
+});
+
+export async function getWithCache(path: string, useCache = true) {
+  const key = `GET:${path}`;
+  if (useCache) {
+    const cached = cache.get(key);
+    if (cached) return cached;
+  }
+  const res = await client.get(path);
+  if (useCache) cache.set(key, res.data);
+  return res.data;
+}
+
+export default client;

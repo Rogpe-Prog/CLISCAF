@@ -1,0 +1,6 @@
+import { FastifyInstance } from 'fastify';
+import externalRoute from './external.route.js';
+
+export default async function (app: FastifyInstance) {
+  app.register(externalRoute, { prefix: '/api' });
+}

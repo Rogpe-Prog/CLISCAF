@@ -1,0 +1,6 @@
+import { FastifyInstance } from 'fastify';
+import externalController from '../controllers/external.controller.js';
+
+export default async function (app: FastifyInstance) {
+  app.get('/external', externalController.getData);
+}

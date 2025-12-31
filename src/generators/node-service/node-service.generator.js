@@ -2,10 +2,11 @@ import fs from 'fs-extra';
 import path from 'path';
 import Handlebars from 'handlebars';
 
-export async function generateNodeService({ serviceName, destination = '.' }) {
+export async function generateNodeService({ serviceName, destination = '.', serviceType = 'microservice' }) {
   // destination pode ser relativo ou absoluto
   const targetDir = path.resolve(process.cwd(), destination || '.', serviceName);
-  const templateDir = path.resolve(process.cwd(), 'src/templates/node-service');
+  const templateName = serviceType === 'bff' ? 'bff-service' : 'node-service';
+  const templateDir = path.resolve(process.cwd(), 'src/templates', templateName);
 
   // Verifica se o microservice já existe
   if (await fs.pathExists(targetDir)) {
@@ -19,7 +20,7 @@ export async function generateNodeService({ serviceName, destination = '.' }) {
   await fs.copy(templateDir, targetDir);
 
   // Processa os arquivos .hbs
-  await processTemplates(targetDir, { serviceName });
+  await processTemplates(targetDir, { serviceName, serviceType });
 
   console.log(`✅ Microservice '${serviceName}' criado com sucesso!`);
   console.log(`Local: ${targetDir}`);

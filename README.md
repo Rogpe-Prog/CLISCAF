@@ -1,6 +1,6 @@
-# create-vertex-service
+# scaffolding-cli
 
-Ferramenta CLI interna para scaffold (archetype) de microserviços Node.js usados na plataforma Vertex.
+Ferramenta CLI interna para scaffold (archetype) de microserviços Node.js (microservice ou BFF).
 
 Resumo rápido
 - Gera um template completo de microservice em TypeScript + Express usando templates Handlebars (.hbs).
@@ -32,8 +32,7 @@ Passo a passo (PowerShell) — execute um por vez
 # 1) Gerar o microservice (interativo)
 node bin/index.js init
 
-    # (alternativa: gerar sem prompts — localmente temos um helper)
-    node test-generate.mjs
+    # (alternativa: gerar sem prompts — use os helpers `run-generate-*.mjs` ou `node bin/index.js init`)
 
 # 2) Entrar na pasta do serviço (substitua pelo nome escolhido)
 cd <nome-do-servico>

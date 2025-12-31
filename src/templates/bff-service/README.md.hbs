@@ -1,0 +1,25 @@
+# {{serviceName}} (BFF)
+
+Backend-for-Frontend scaffold gerado pelo `scaffolding-cli`.
+
+Use este template para endpoints que agregam APIs externas e adaptam para o frontend.
+
+Passos
+
+```bash
+npm install
+npm run build
+npm start
+```
+
+Health: GET /health
+
+Exemplo BFF
+
+O template inclui um cliente HTTP e rota de exemplo `GET /api/external` que chama um upstream via `UPSTREAM_BASE_URL`.
+
+Defina em `.env`:
+
+```
+UPSTREAM_BASE_URL=http://localhost:3001
+```
