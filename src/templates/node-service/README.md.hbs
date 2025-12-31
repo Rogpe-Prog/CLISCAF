@@ -1,51 +1,63 @@
 # {{serviceName}}
 
-Vertex AI Microservice
+Microservice scaffold gerado pelo `create-vertex-service`.
 
-## Getting Started
+Arquitetura recomendada (Clean + Fastify)
 
-### Prerequisites
-- Node.js 18+
-- npm or yarn
-
-### Installation
-
-```bash
-npm install
-```
-
-### Development
-
-```bash
-npm run dev
-```
-
-The service will run on `http://localhost:3000`
-
-### Build
-
-```bash
-npm run build
-```
-
-### Start Production
-
-```bash
-npm start
-```
-
-## API Endpoints
-
-- `GET /` - Service info
-- `GET /health` - Health check
-- `GET /health/readiness` - Readiness probe
-
-## Project Structure
+Estrutura principal (exemplo):
 
 ```
 src/
-├── main.ts          # Entry point
-├── server.ts        # Express app setup
-└── health/
-    └── health.route.ts  # Health check endpoints
+├── controllers/          # Recebe requisições, valida e chama Use Cases
+│   └── <nome>.controller.ts
+├── use-cases/            # Regras de negócio (Clean Architecture)
+│   └── <nome>.usecase.ts
+├── repositories/         # Persistência de dados / abstrações DB
+│   └── <nome>.repository.ts
+├── workers/              # Processamento de filas/eventos (SNS/SQS)
+│   └── <nome>.worker.ts
+├── health/               # Endpoints de healthcheck
+│   └── health.route.ts
+├── routes/               # Definição de rotas REST
+│   └── <nome>.routes.ts
+├── main.ts               # Inicialização do Fastify
+└── server.ts             # Configuração do servidor, plugins, middlewares
 ```
+
+Dependências essenciais já incluídas (Fastify, zod, dotenv, aws-sdk, jwt, etc.).
+
+Scripts
+
+```json
+"dev": "ts-node-dev --respawn --transpile-only src/main.ts",
+"build": "tsc",
+"start": "node dist/main.js",
+"test": "jest",
+"lint": "eslint . --ext .ts"
+```
+
+Configuração TypeScript
+
+- `strict: true`
+- `outDir: dist`
+- `baseUrl` e `paths` prontos para aliases (`@controllers`, `@use-cases`, ...)
+
+Boilerplate incluso
+
+- `src/controllers/sample.controller.ts`
+- `src/use-cases/sample.usecase.ts`
+- `src/repositories/sample.repository.ts`
+- `src/routes/sample.routes.ts`
+- `src/workers/sample.worker.ts`
+- `src/health/health.route.ts`
+
+Env & exemplos
+
+- `.env.example` incluído com variáveis básicas
+
+Observações de boas práticas
+
+- Use `zod` para validação de payloads e `@opentelemetry/api` para integração futura.
+- Separe responsabilidades: controllers -> use-cases -> repositories.
+- Repositórios e use-cases devem ser tenant-aware (usar `X-Tenant-Id`).
+

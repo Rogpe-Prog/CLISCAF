@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import { generateNodeService } from '../generators/node-service/node-service.generator.js';
-import { serviceNamePrompt } from '../prompts/index.js';
+import { serviceNamePrompt, destinationPrompt } from '../prompts/index.js';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 
@@ -17,13 +17,13 @@ program
   .description('Initialize a new Vertex Microservice')
   .action(async () => {
     try {
-      const answers = await inquirer.prompt([serviceNamePrompt]);
-      const { serviceName } = answers;
+      const answers = await inquirer.prompt([serviceNamePrompt, destinationPrompt]);
+      const { serviceName, destination } = answers;
 
       console.log(chalk.blue('\n📦 Criando microservice...\n'));
       console.log(`  Service name: ${chalk.cyan(serviceName)}\n`);
 
-      await generateNodeService({ serviceName });
+      await generateNodeService({ serviceName, destination });
 
       console.log(chalk.green(`\n✅ Microservice '${serviceName}' criado com sucesso!\n`));
       console.log(chalk.gray(`Execute: cd ${serviceName} && npm install`));

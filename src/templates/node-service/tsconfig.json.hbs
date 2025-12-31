@@ -13,7 +13,15 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "@controllers/*": ["src/controllers/*"],
+      "@use-cases/*": ["src/use-cases/*"],
+      "@repositories/*": ["src/repositories/*"],
+      "@workers/*": ["src/workers/*"],
+      "@routes/*": ["src/routes/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

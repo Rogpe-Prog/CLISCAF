@@ -2,13 +2,14 @@ import fs from 'fs-extra';
 import path from 'path';
 import Handlebars from 'handlebars';
 
-export async function generateNodeService({ serviceName }) {
-  const targetDir = path.resolve(process.cwd(), serviceName);
+export async function generateNodeService({ serviceName, destination = '.' }) {
+  // destination pode ser relativo ou absoluto
+  const targetDir = path.resolve(process.cwd(), destination || '.', serviceName);
   const templateDir = path.resolve(process.cwd(), 'src/templates/node-service');
 
   // Verifica se o microservice já existe
   if (await fs.pathExists(targetDir)) {
-    throw new Error(`A pasta '${serviceName}' já existe`);
+    throw new Error(`A pasta '${targetDir}' já existe`);
   }
 
   // Cria apenas a raiz

@@ -26,6 +26,44 @@ node bin/index.js --help
 node bin/index.js init
 ```
 
+Passo a passo (PowerShell) — execute um por vez
+
+```powershell
+# 1) Gerar o microservice (interativo)
+node bin/index.js init
+
+    # (alternativa: gerar sem prompts — localmente temos um helper)
+    node test-generate.mjs
+
+# 2) Entrar na pasta do serviço (substitua pelo nome escolhido)
+cd <nome-do-servico>
+
+# 3) Instalar dependências
+npm install
+
+# 4) Compilar TypeScript
+npm run build
+
+# 5) Iniciar (o script já faz build antes de rodar)
+npm start
+
+    # 6) Iniciar manualmente (útil para debug)
+    node dist/main.js
+
+# 7) Testar endpoint /health
+curl http://localhost:3000/health
+
+# 8) Testar endpoint /health (PowerShell)
+Invoke-WebRequest -UseBasicParsing http://localhost:3000/health | Select-Object -Expand Content
+
+# 9) Mudar porta e iniciar (ex.: porta 4000)
+$env:PORT=4000; npm start
+```
+
+Notas rápidas
+- Se houver erro de import ES modules em tempo de execução, verifique se os imports relativos nos arquivos gerados terminam com `.js` (o gerador já aplica isso nos templates atualizados).
+- O `npm start` do template executa `npm run build && node dist/main.js`.
+
 Fluxo esperado após `init`
 - A ferramenta cria uma pasta com o nome informado (ex: `adsb-feed-service`).
 - Dentro dessa pasta haverá o template pronto. Para rodar o serviço gerado:
