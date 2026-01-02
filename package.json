@@ -1,13 +1,14 @@
 {
   "name": "scaffolding-cli",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "bin": {
     "scaffolding-cli": "bin/index.js"
   },
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "link": "npm link",
+    "unlink": "npm unlink -g scaffolding-cli"
   },
   "keywords": [],
   "author": "",

@@ -1,12 +1,18 @@
 import fs from 'fs-extra';
 import path from 'path';
 import Handlebars from 'handlebars';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export async function generateNodeService({ serviceName, destination = '.', serviceType = 'microservice' }) {
   // destination pode ser relativo ou absoluto
   const targetDir = path.resolve(process.cwd(), destination || '.', serviceName);
   const templateName = serviceType === 'bff' ? 'bff-service' : 'node-service';
-  const templateDir = path.resolve(process.cwd(), 'src/templates', templateName);
+  // Caminho baseado no diretório do gerador (não no cwd)
+  const templateDir = path.resolve(__dirname, '../../templates', templateName);
 
   // Verifica se o microservice já existe
   if (await fs.pathExists(targetDir)) {

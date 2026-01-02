@@ -2,7 +2,80 @@
 
 Microservice scaffold gerado pelo `scaffolding-cli`.
 
-Arquitetura recomendada (Clean + Fastify)
+## 🚀 Executar com Docker (Recomendado)
+
+### Pré-requisitos
+
+- Docker instalado
+- Docker Compose instalado
+
+### Configuração
+
+1. Copie o arquivo de exemplo de variáveis de ambiente:
+```bash
+cp .env.example .env
+```
+
+2. Edite o `.env` conforme necessário:
+```env
+NODE_ENV=production
+PORT=3000
+AWS_REGION=us-east-1
+# SQS_QUEUE_URL=https://sqs.us-east-1.amazonaws.com/123456789/your-queue
+```
+
+### Subir o serviço
+
+```bash
+# Buildar e iniciar o container
+docker-compose up -d
+
+# Ver logs
+docker-compose logs -f
+
+# Parar o container
+docker-compose down
+```
+
+O serviço estará disponível em `http://localhost:3000`
+
+### Comandos úteis
+
+```bash
+# Rebuild da imagem
+docker-compose build
+
+# Reiniciar o serviço
+docker-compose restart
+
+# Ver status
+docker-compose ps
+
+# Entrar no container
+docker-compose exec {{serviceName}} sh
+
+# Ver logs em tempo real
+docker-compose logs -f {{serviceName}}
+```
+
+## 💻 Executar localmente (sem Docker)
+
+```bash
+# Instalar dependências
+npm install
+
+# Desenvolvimento
+npm run dev
+
+# Produção
+npm run build
+npm start
+
+# Worker (processamento de filas)
+npm run worker
+```
+
+## 🏗️ Arquitetura recomendada (Clean + Fastify)
 
 Estrutura principal (exemplo):
 
@@ -26,7 +99,7 @@ src/
 
 Dependências essenciais já incluídas (Fastify, zod, dotenv, aws-sdk, jwt, etc.).
 
-Scripts
+## 📜 Scripts
 
 ```json
 "dev": "ts-node-dev --respawn --transpile-only src/main.ts",
@@ -36,13 +109,13 @@ Scripts
 "lint": "eslint . --ext .ts"
 ```
 
-Configuração TypeScript
+## ⚙️ Configuração TypeScript
 
 - `strict: true`
 - `outDir: dist`
 - `baseUrl` e `paths` prontos para aliases (`@controllers`, `@use-cases`, ...)
 
-Boilerplate incluso
+## 📦 Boilerplate incluso
 
 - `src/controllers/sample.controller.ts`
 - `src/use-cases/sample.usecase.ts`
@@ -51,22 +124,22 @@ Boilerplate incluso
 - `src/workers/sample.worker.ts`
 - `src/health/health.route.ts`
 
-Env & exemplos
+## 🔧 Env & exemplos
 
 - `.env.example` incluído com variáveis básicas
 
-Observações de boas práticas
+## ✅ Observações de boas práticas
 
 - Use `zod` para validação de payloads e `@opentelemetry/api` para integração futura.
 - Separe responsabilidades: controllers -> use-cases -> repositories.
 - Repositórios e use-cases devem ser tenant-aware (usar `X-Tenant-Id`).
 
-Cabeçalho de correlação e execução de workers
+## 🔄 Cabeçalho de correlação e execução de workers
 
 - Este template já garante que `X-Tenant-Id` seja lido pelos controllers e passado aos use-cases.
 - O middleware de entrada também garante/gera `x-correlation-id` e anexa um `requestLogger` ao request para logs estruturados.
 
-Como executar o worker SQS (desenvolvimento)
+## 🔧 Como executar o worker SQS (desenvolvimento)
 
 1. Preencha `.env` com `SQS_QUEUE_URL` e `AWS_REGION`.
 2. Rode o worker em dev:
@@ -77,9 +150,7 @@ npm run worker
 
 O worker fará polling na fila definida por `SQS_QUEUE_URL` e tentará processar mensagens (o `SampleWorker` contém um `TODO` para o processamento do payload).
 
-Propagação de correlação entre serviços
+## 🔗 Propagação de correlação entre serviços
 
 - Quando o BFF ou outros clientes HTTP chamarem este serviço, envie o header `x-correlation-id` para manter rastreabilidade. O template do BFF já injeta `x-correlation-id` automaticamente em requisições upstream.
 - Para logs consistentes, use `(req as any).requestLogger` dentro de controllers/use-cases quando disponível.
-
-
